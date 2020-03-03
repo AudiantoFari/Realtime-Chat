@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "988342574347",
+    "firebase_url": "https://realtime-chat-ceaea.firebaseio.com",
+    "project_id": "realtime-chat-ceaea",
+    "storage_bucket": "realtime-chat-ceaea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:988342574347:android:5053eadd4e94b0f41ad60e",
+        "android_client_info": {
+          "package_name": "com.ian.realtimechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "988342574347-mrqqho5s8fg6leu63s5d846ah8spqvku.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ian.realtimechat",
+            "certificate_hash": "0ad98fb908b5113b0867fb26cd6e28bf027cb05b"
+          }
+        },
+        {
+          "client_id": "988342574347-7ii50su1a88em1dr11rpqt87ou7tlu8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-igVXjhjotRtKFsDBiVmjuxyvir3ePZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "988342574347-7ii50su1a88em1dr11rpqt87ou7tlu8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
