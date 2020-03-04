@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        tvUsername = findViewById(R.id.tvUsername);
+        btnLogout = findViewById(R.id.btnLogout);
+
         final String uid = getIntent().getStringExtra(EXTRA_UID);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String email = user.getEmail();
                 System.out.println(email + " / " + username);
 
+                tvUsername.setText("Hai "+username+"\nEmail anda "+email);
+
             }
 
             @Override
@@ -60,9 +65,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         };
         mRef.addListenerForSingleValueEvent(eventListener);
-
-        tvUsername = findViewById(R.id.txtUsername);
-        btnLogout = findViewById(R.id.btnLogout);
 
         btnLogout.setOnClickListener(this);
     }
