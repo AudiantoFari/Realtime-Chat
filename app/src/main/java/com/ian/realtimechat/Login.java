@@ -42,8 +42,24 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         mAuth = FirebaseAuth.getInstance();
 
+        if  (isLoggedIn()) {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            Log.d(TAG, user.getUid()+ " / "+user.getEmail());
+            Intent intent = new Intent(Login.this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_UID, user.getUid());
+            startActivity(intent);
+        }
+
         btnLogin.setOnClickListener(this);
         tvRegister.setOnClickListener(this);
+    }
+
+    private boolean isLoggedIn() {
+        if (mAuth.getCurrentUser() != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

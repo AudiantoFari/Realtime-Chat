@@ -1,32 +1,37 @@
 package com.ian.realtimechat;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+public class MainActivity extends AppCompatActivity  {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
 
-    Button btnLogout;
-    TextView tvUsername;
+    RecyclerView lstContact;
+
+    private ArrayList<Chat> contact = new ArrayList<>();
 
     public static final String EXTRA_UID = "extra_uid";
 
@@ -35,16 +40,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvUsername = findViewById(R.id.tvUsername);
-        btnLogout = findViewById(R.id.btnLogout);
-
         final String uid = getIntent().getStringExtra(EXTRA_UID);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference mRef = mDatabase.child("User").child(uid);
         mAuth = FirebaseAuth.getInstance();
 
-        ValueEventListener eventListener = new ValueEventListener() {
+        lstContact = findViewById(R.id.lstContact);
+        lstContact.setHasFixedSize(true);
+
+        mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -55,23 +60,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String email = user.getEmail();
                 System.out.println(email + " / " + username);
 
-                tvUsername.setText("Hai "+username+"\nEmail anda "+email);
+                getSupportActionBar().setTitle(username);
+
+                for (DataSnapshot ns: dataSnapshot.getChildren()) {
+                    Chat chat = ns.getValue(Chat.class);
+                    contact.add(chat);
+                }
 
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.w("Refresh", "loadNote:onCancelled", databaseError.toException());
             }
-        };
-        mRef.addListenerForSingleValueEvent(eventListener);
+        });
 
-        btnLogout.setOnClickListener(this);
+        showChatList();
+
+    }
+
+    private void showChatList() {
+        lstContact.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        setMode(item.getItemId());
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setMode(int itemId) {
+        switch (itemId){
             case R.id.btnLogout:
                 mAuth.signOut();
                 Intent intent = new Intent(this, Login.class);

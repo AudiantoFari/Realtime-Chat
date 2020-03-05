@@ -95,6 +95,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             Log.d(TAG, "Register Success");
                             Toast.makeText(Register.this, "Register Success", Toast.LENGTH_SHORT).show();
                             pDialog.dismiss();
+                            mAuth.signOut();
                             Intent intent = new Intent(Register.this, Login.class);
                             startActivity(intent);
                         } else {
